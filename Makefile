@@ -1,19 +1,23 @@
+SHELL := /bin/bash
 CXX = g++
-SHELL = /bin/bash
-
-# compiler flags:
-CXXFLAGS = -g -std=c++14 -Wall -Wall -Werror=return-type  \
-			-Werror=uninitialized -Wno-sign-compare
+CXXFLAGS = -g -std=c++14 -Wall -Werror=return-type -Werror=uninitialized -Wno-sign-compare
+RM = rm -rf
 
 HEADERS = point.hpp polygon.hpp gis.hpp
 OBJECTS = main.o point.o polygon.o gis.o
 TESTS = test-1-point test-2-polygon test-3-polygon-advanced test-4-gis
+CATCH = test/catch/catch.o
+
+all: main $(TESTS)
 
 main: $(OBJECTS)
-	$(CXX) -o $@ $^
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
 %.o: %.cpp $(HEADERS)
 	$(CXX) $(CXXFLAGS) -c -o $@ $<
+
+$(CATCH): test/catch/catch.cpp
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 simple-run: main
 	echo -e "bad-file-name.zz\nsimple-polygons.txt\n1\n1\n3\n3\n7\n7\nq\n" | ./main
@@ -23,30 +27,31 @@ complex-run: main
 
 test-all: $(TESTS)
 
-test-1-point: test/catch/catch.o test/test-1-point.o point.o
-	$(CXX) -o $@ $^
-	./test-1-point --success
+test-1-point: test/test-1-point.o point.o $(CATCH)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	./$@ --success
 
-test-2-polygon: test/catch/catch.o test/test-2-polygon.o polygon.o point.o
-	$(CXX) -o $@ $^
-	./test-2-polygon --success
+test-2-polygon: test/test-2-polygon.o polygon.o point.o $(CATCH)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	./$@ --success
 
-test-3-polygon-advanced: test/catch/catch.o test/test-3-polygon-advanced.o point.o polygon.o
-	$(CXX) -o $@ $^
-	./test-3-polygon-advanced --success
+test-3-polygon-advanced: test/test-3-polygon-advanced.o point.o polygon.o $(CATCH)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	./$@ --success
 
-test-4-gis: test/catch/catch.o test/test-4-gis.o point.o polygon.o gis.o
-	$(CXX) -o $@ $^
-	./test-4-gis --success
+test-4-gis: test/test-4-gis.o point.o polygon.o gis.o $(CATCH)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+	./$@ --success
 
-# Check return codes of valgrind memory checks
-# Display message if it returns non-zero
 test-mem1: test-2-polygon
-	valgrind --error-exitcode=1 --leak-check=full ./test-2-polygon || echo "Memory test failed"
+	valgrind --error-exitcode=1 --leak-check=full ./test-2-polygon
 
 test-mem2: test-4-gis
-	valgrind --error-exitcode=1 --leak-check=full ./test-4-gis || echo "Memory test failed"
+	valgrind --error-exitcode=1 --leak-check=full ./test-4-gis
+
+test-mem: test-mem1 test-mem2
 
 clean:
-	rm -rf *.dSYM test/*.dSYM
-	$(RM) *.o *.gc* main test/*.o test/catch/catch.o $(TESTS)
+	$(RM) *.dSYM test/*.dSYM *.o *.gc* main test/*.o $(CATCH) $(TESTS)
+
+.PHONY: all main simple-run complex-run test-all test-mem1 test-mem2 test-mem clean test-1-point test-2-polygon test-3-polygon-advanced test-4-gis
