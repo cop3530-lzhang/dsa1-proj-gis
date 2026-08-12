@@ -1,0 +1,84 @@
+{
+    "tests": [
+    {
+        "name": "Run point tests",
+        "setup": "make test/catch/catch.o",
+        "run": "make test-1-point",
+        "input": "",
+        "output": "All tests passed",
+        "comparison": "included",
+        "timeout": 1,
+        "points": 10
+    },
+    {
+        "name": "Run polygon tests",
+        "setup": "make test/catch/catch.o",
+        "run": "make test-2-polygon",
+        "input": "",
+        "output": "All tests passed",
+        "comparison": "included",
+        "timeout": 1,
+        "points": 10
+    },
+    {
+        "name": "Run advanced polygon tests",
+        "setup": "make test/catch/catch.o",
+        "run": "make test-3-polygon-advanced",
+        "input": "",
+        "output": "All tests passed",
+        "comparison": "included",
+        "timeout": 1,
+        "points": 10
+    },
+    {
+        "name": "Run GIS tests",
+        "setup": "make test/catch/catch.o",
+        "run": "make test-4-gis",
+        "input": "",
+        "output": "All tests passed",
+        "comparison": "included",
+        "timeout": 1,
+        "points": 10
+    },
+    {
+        "name": "Memory leak check polygon class",
+        "setup": "(valgrind --version || (sudo apt-get update -y && sudo apt-get install -y valgrind)) && make test-2-polygon",
+        "run": "valgrind --error-exitcode=1 --leak-check=full ./test-2-polygon",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 1,
+        "points": 10
+    },
+    {
+        "name": "Memory leak check GIS class",
+        "setup": "(valgrind --version || (sudo apt-get update -y && sudo apt-get install -y valgrind)) && make test-4-gis",
+        "run": "valgrind --error-exitcode=1 --leak-check=full ./test-4-gis",
+        "input": "",
+        "output": "",
+        "comparison": "included",
+        "timeout": 1,
+        "points": 10
+    },
+    {
+        "name": "Verify working main on simple data",
+        "setup": "",
+        "run": "make simple-run",
+        "input": "",
+        "output": "squareParcel(\n|.)*wideRectangleParcel",
+        "comparison": "regex",
+        "timeout": 1,
+        "points": 10
+    },
+    {
+        "name": "Verify working main on complex data",
+        "setup": "",
+        "run": "make complex-run",
+        "input": "",
+        "output": "Not Found(.|\n)*SantaRosaSoundWatershed(.|\n)*BayouChico(.|\n)*PensacolaBayWatershedNorth(.|\n)*ThePond(.|\n)*PensacolaBayWatershedSouth(.|\n)*WaterHoldingArea(.|\n)*",
+        "comparison": "regex",
+        "timeout": 1,
+        "points": 10
+    }
+    ]
+}
