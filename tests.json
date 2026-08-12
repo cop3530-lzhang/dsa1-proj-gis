@@ -1,0 +1,78 @@
+[
+  {
+    "name": "Run point tests",
+    "type": "io",
+    "setup": "make test/catch/catch.o",
+    "run": "make test-1-point",
+    "expected": "All tests passed",
+    "comparison": "included",
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Run polygon tests",
+    "type": "io",
+    "setup": "make test/catch/catch.o",
+    "run": "make test-2-polygon",
+    "expected": "All tests passed",
+    "comparison": "included",
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Run advanced polygon tests",
+    "type": "io",
+    "setup": "make test/catch/catch.o",
+    "run": "make test-3-polygon-advanced",
+    "expected": "All tests passed",
+    "comparison": "included",
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Run GIS tests",
+    "type": "io",
+    "setup": "make test/catch/catch.o",
+    "run": "make test-4-gis",
+    "expected": "All tests passed",
+    "comparison": "included",
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Memory leak check polygon class",
+    "type": "run",
+    "setup": "(valgrind --version || (sudo apt-get update -y && sudo apt-get install -y valgrind)) && make test-2-polygon",
+    "run": "valgrind --error-exitcode=1 --leak-check=full ./test-2-polygon",
+    "exit-code": 0,
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Memory leak check GIS class",
+    "type": "run",
+    "setup": "(valgrind --version || (sudo apt-get update -y && sudo apt-get install -y valgrind)) && make test-4-gis",
+    "run": "valgrind --error-exitcode=1 --leak-check=full ./test-4-gis",
+    "exit-code": 0,
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Verify working main on simple data",
+    "type": "io",
+    "run": "make simple-run",
+    "expected": "squareParcel(\n|.)*wideRectangleParcel",
+    "comparison": "regex",
+    "timeout": 1,
+    "points": 10
+  },
+  {
+    "name": "Verify working main on complex data",
+    "type": "io",
+    "run": "make complex-run",
+    "expected": "Not Found(.|\n)*SantaRosaSoundWatershed(.|\n)*BayouChico(.|\n)*PensacolaBayWatershedNorth(.|\n)*ThePond(.|\n)*PensacolaBayWatershedSouth(.|\n)*WaterHoldingArea(.|\n)*",
+    "comparison": "regex",
+    "timeout": 1,
+    "points": 10
+  }
+]
