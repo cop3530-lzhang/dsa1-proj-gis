@@ -206,6 +206,27 @@ Have a great day!
        not pass, keep trying.
 4. Do not remove the data files!
 
+## Building and Testing
+
+A `Makefile` is provided to automate compilation and testing:
+- **Compile main program**: `make main`
+- **Run sample data executions**:
+  - `make simple-run`: Runs main program with simple polygon data.
+  - `make complex-run`: Runs main program with complex polygon data.
+- **Run unit tests**: `make test-all`
+- **Run individual unit tests**:
+  - `make test-1-point`: Point class unit tests.
+  - `make test-2-polygon`: Polygon class unit tests.
+  - `make test-3-polygon-advanced`: Advanced polygon unit tests.
+  - `make test-4-gis`: GIS system unit tests.
+- **Run memory leak checks**:
+  - `make test-mem1`: Memory leak check on Polygon class.
+  - `make test-mem2`: Memory leak check on GIS system.
+  - `make test-mem`: Runs both memory leak checks.
+- **Clean build artifacts**: `make clean`
+
+> **Note for macOS / Xcode users**: Valgrind is not natively supported on macOS. If you are using macOS command line tools (Xcode), you cannot directly execute `valgrind` / `make test-mem` locally. Please launch a **GitHub Codespaces** instance on GitHub (or use a Linux container) to run memory leak checks.
+
 ## Important Notes:
 - Projects will be graded on whether they correctly solve the problem, and
   whether they adhere to good programming practices.
